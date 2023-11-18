@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 
 
-class UserManger(BaseUserManager):
+class UserManager(BaseUserManager):
     def _create_user(self, email, first_name, last_name, username, password=None, **extra_fields):
         if not email:
             raise ValueError("User must have an email address")
@@ -51,7 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ('first_name', 'last_name', 'username')
 
-    objects = UserManger()
+    objects = UserManager()
 
     def __str__(self):
         return self.email
