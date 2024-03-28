@@ -164,6 +164,11 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# migrations
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+
 # git token
 #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
 
