@@ -53,8 +53,11 @@ $(document).ready(function() {
 
 
 
-
+    $('#messages').delay(4000).fadeOut();
     
 }); 
 // jquery end
 
+// setTimeout(function(){
+//     $('#messages').fadeOut('slow')
+// }, 4000)
