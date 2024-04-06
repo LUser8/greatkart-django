@@ -119,7 +119,7 @@ def forget_password(request):
             return redirect(f'/account/login/?command=validate_password&email={to_email}')
         else:
             messages.error(request, 'Account does not exists!')
-            return redirect('forget_password')
+            return redirect('login')
         
     return render(request, 'accounts/forget_password.html')
 
@@ -131,8 +131,25 @@ def reset_password_validate(request, uidb64, token):
         user = None
     
     if user is not None and default_token_generator.check_token(user, token):
-        messages.success(request, "Password updated successfuly.")
-        return redirect('login')
+        request.session['uid'] = uid
+        messages.success(request, "Please reset your password.")
+        return redirect('reset_password')
     else:
         messages.error(request, "Invalid activation link!")
         return redirect('forget_password')
+    
+def reset_password(request):
+    if request.method == 'POST':
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if password == confirm_password:
+            uid = request.session['uid']
+            user = User.objects.get(pk=uid)
+            user.set_password(password)
+            user.save()
+            messages.success(request, "Password reset successfuly.")            
+        else:
+            messages.error(request, "password do not match!")
+            return redirect(reset_password)
+    return render(request, 'accounts/reset_password.html')
